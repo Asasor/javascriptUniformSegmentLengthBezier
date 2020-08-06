@@ -10,6 +10,27 @@ function binom(n, k) {
     return coeff;
 }
 
+function basicBezierPresentation(pNum, pList, rad, context) {
+    context.fillStyle = 'green';
+    for (let i = 0; i < pList.length; i++) {
+        context.beginPath();
+        context.arc(pList[i][0], pList[i][1], rad, 0, 2 * Math.PI, false);
+        context.fill();
+        context.stroke();
+    }
+
+    context.fillStyle = 'red';
+    for (let i = 0; i <= 1; i += 1 / pNum) {
+        let x = parseInt(bezier(i, pList)[0]);
+        let y = parseInt(bezier(i, pList)[1]);
+        context.beginPath();
+        context.arc(x, y, rad, 0, 2 * Math.PI, false);
+        context.fill();
+        context.stroke();
+        //alert([x,y]);
+    }
+}
+
 
 // modified from https://stackoverflow.com/questions/31167663/how-to-code-an-nth-order-bezier-curve
 function bezier(t, plist) {
@@ -32,4 +53,4 @@ function dist(x1, y1, x2, y2) {
 }
 
 
-drawBezierSegments(40, 40, [[358,148],[120,144],[364,265]], [100,-10]);
+basicBezierPresentation(100, [[300, 260], [28, 286], [600, 53], [500, 300], [26, 152]], 5, context);
