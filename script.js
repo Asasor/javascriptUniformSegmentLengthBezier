@@ -10,26 +10,34 @@ function binom(n, k) {
     return coeff;
 }
 
-async function basicBezierPresentation(pNum, pList, rad, context) {
-    let pdist = 10;
+async function basicBezierPresentation(acc, pList, rad, context) {
+    let sepDist = 400;
+    let pDist = 0;
+    let diff = 0;
     let lx = parseInt(bezier(0, pList)[0]);
     let ly = parseInt(bezier(0, pList)[1]);
 
     context.fillStyle = 'red';
-    for (let i = 0; i <= 1 + 1 / pNum; i += 1 / pNum) {
+    for (let i = 1 / acc; i <= 1 + 1 / acc; i += 1 / acc) {  // acc --> accuracy
         let x = parseInt(bezier(i, pList)[0]);
         let y = parseInt(bezier(i, pList)[1]);
-        context.beginPath();
-        context.arc(x, y, rad, 0, 2 * Math.PI, false);
-        context.fill();
-        context.stroke();
-        context.moveTo(x,y);
-        context.lineTo(lx, ly);
-        context.stroke();
-        //alert([x,y]);
-        
-        lx = x;
-        ly = y;
+        pDist = dist(lx, ly, x, y)
+        diff = Math.abs(sepDist - pDist);
+        //alert([diff, pDist, sepDist]);
+        if (diff % sepDist < 50) {
+            context.beginPath();
+            context.arc(x, y, rad, 0, 2 * Math.PI, false);
+            context.fill();
+            context.stroke();
+            context.moveTo(x,y);
+            context.lineTo(lx, ly);
+            context.stroke();
+
+            pDist = 0;
+
+            lx = x;
+            ly = y;
+        }
 
         await sleep(10);
     }
@@ -72,4 +80,4 @@ function sleep(ms) {
 
 const plistReal = [[300, 260], [28, 286], [600, 53], [500, 300], [26, 152]];
 
-basicBezierPresentation(100, plistReal, 5, context);
+basicBezierPresentation(1000, plistReal, 5, context);
