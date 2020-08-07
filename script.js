@@ -11,13 +11,9 @@ function binom(n, k) {
 }
 
 function basicBezierPresentation(pNum, pList, rad, context) {
-    context.fillStyle = 'green';
-    for (let i = 0; i < pList.length; i++) {
-        context.beginPath();
-        context.arc(pList[i][0], pList[i][1], rad, 0, 2 * Math.PI, false);
-        context.fill();
-        context.stroke();
-    }
+    let pdist = 10;
+    let lx = parseInt(bezier(0, pList)[0]);
+    let ly = parseInt(bezier(0, pList)[1]);
 
     context.fillStyle = 'red';
     for (let i = 0; i <= 1; i += 1 / pNum) {
@@ -27,7 +23,21 @@ function basicBezierPresentation(pNum, pList, rad, context) {
         context.arc(x, y, rad, 0, 2 * Math.PI, false);
         context.fill();
         context.stroke();
+        context.moveTo(x,y);
+        context.lineTo(lx, ly);
+        context.stroke();
         //alert([x,y]);
+        
+        lx = x;
+        ly = y;
+    }
+
+    context.fillStyle = 'green';
+    for (let i = 0; i < pList.length; i++) {
+        context.beginPath();
+        context.arc(pList[i][0], pList[i][1], rad, 0, 2 * Math.PI, false);
+        context.fill();
+        context.stroke();
     }
 }
 
@@ -54,3 +64,8 @@ function dist(x1, y1, x2, y2) {
 
 
 basicBezierPresentation(100, [[300, 260], [28, 286], [600, 53], [500, 300], [26, 152]], 5, context);
+
+// taken from https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
