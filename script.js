@@ -14,32 +14,29 @@ async function basicBezierPresentation(acc, pList, rad, context) {
     let sepDist = 400;
     let pDist = 0;
     let diff = 0;
-    let lx = parseInt(bezier(0, pList)[0]);
-    let ly = parseInt(bezier(0, pList)[1]);
+    let lpL = bezier(0, pList);  // lpL --> last point Location
 
     context.fillStyle = 'red';
     for (let i = 1 / acc; i <= 1 + 1 / acc; i += 1 / acc) {  // acc --> accuracy
-        let x = parseInt(bezier(i, pList)[0]);
-        let y = parseInt(bezier(i, pList)[1]);
-        pDist = dist(lx, ly, x, y)
-        diff = Math.abs(sepDist - pDist);
-        //alert([diff, pDist, sepDist]);
+        let pL = bezier(i, pList);  // pL --> point Location 
+        pDist = dist(lpL.x, lpL.y, pL.x, pL.y);
+        diff = Math.abs(pDist - sepDist);
         if (diff % sepDist < 50) {
             context.beginPath();
-            context.arc(x, y, rad, 0, 2 * Math.PI, false);
+            context.arc(pL.x, pL.y, rad, 0, 2 * Math.PI, false);
             context.fill();
             context.stroke();
-            context.moveTo(x,y);
-            context.lineTo(lx, ly);
+            context.moveTo(pL.x,pL.y);
+            context.lineTo(lpL.x, lpL.y);
             context.stroke();
 
             pDist = 0;
 
-            lx = x;
-            ly = y;
+            lpL.x = pL.x;
+            lpL.y = pL.y;
         }
 
-        await sleep(10);
+        //await sleep(10);
     }
 
     context.fillStyle = 'green';
@@ -64,7 +61,7 @@ function bezier(t, plist) {
         y = y + (binom(order, i) * Math.pow((1 - t), (order - i)) * Math.pow(t, i) * (plist[i][1]));
     }
 
-    return [x,y];
+    return {x: x, y: y};
 }
 
 
