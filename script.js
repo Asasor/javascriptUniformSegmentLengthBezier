@@ -10,13 +10,13 @@ function binom(n, k) {
     return coeff;
 }
 
-function basicBezierPresentation(pNum, pList, rad, context) {
+async function basicBezierPresentation(pNum, pList, rad, context) {
     let pdist = 10;
     let lx = parseInt(bezier(0, pList)[0]);
     let ly = parseInt(bezier(0, pList)[1]);
 
     context.fillStyle = 'red';
-    for (let i = 0; i <= 1; i += 1 / pNum) {
+    for (let i = 0; i <= 1 + 1 / pNum; i += 1 / pNum) {
         let x = parseInt(bezier(i, pList)[0]);
         let y = parseInt(bezier(i, pList)[1]);
         context.beginPath();
@@ -30,6 +30,8 @@ function basicBezierPresentation(pNum, pList, rad, context) {
         
         lx = x;
         ly = y;
+
+        await sleep(10);
     }
 
     context.fillStyle = 'green';
@@ -62,10 +64,12 @@ function dist(x1, y1, x2, y2) {
     return Math.pow(Math.abs(x1 - x2), 2) + Math.pow(Math.abs(y1 - y2), 2);
 }
 
-
-basicBezierPresentation(100, [[300, 260], [28, 286], [600, 53], [500, 300], [26, 152]], 5, context);
-
 // taken from https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
+}
+
+
+const plistReal = [[300, 260], [28, 286], [600, 53], [500, 300], [26, 152]];
+
+basicBezierPresentation(100, plistReal, 5, context);
