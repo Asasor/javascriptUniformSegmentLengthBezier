@@ -10,7 +10,29 @@ function binom(n, k) {
     return coeff;
 }
 
-async function basicBezierPresentation(acc, pList, rad, context) {
+
+function UniformBezierDistributionMath(acc, pList, segLen) {
+    let pDist = 0;
+    let diff = 0;
+    let pL = 0;
+    let lpL = bezier(0, pList);  // lpL --> last point Location
+    let outList = []
+
+    for (let i = 1 / acc; i <= 1 + 1 / acc; i += 1 / acc) {  // acc --> accuracy
+        pL = bezier(i, pList);
+        pDist = dist(lpL.x, lpL.y, pL.x, pL.y);
+        diff = Math.abs(pDist - segLen);
+        if (diff % segLen < 50) {
+            outList.push(pL);
+
+            pDist = 0;
+            lpL = pL;
+        }
+    }
+}
+
+
+function basicBezierPresentation(acc, pList, rad, context) {
     let sepDist = 400;
     let pDist = 0;
     let diff = 0;
