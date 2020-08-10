@@ -29,6 +29,8 @@ function UniformBezierDistributionMath(acc, pList, segLen) {
             lpL = pL;
         }
     }
+    
+    return outList;
 }
 
 
