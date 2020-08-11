@@ -16,7 +16,7 @@ function UniformBezierDistributionMath(acc, pList, segLen) {
     let diff = 0;
     let pL = 0;
     let lpL = bezier(0, pList);  // lpL --> last point Location
-    let outList = []
+    let outList = [];
 
     for (let i = 1 / acc; i <= 1 + 1 / acc; i += 1 / acc) {  // acc --> accuracy
         pL = bezier(i, pList);
